@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[%level] %d %class:%line - %message %n</pattern>
+            <charset>utf8</charset>
+        </encoder>
+    </appender>
+    <!-- 文件输出 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <encoder>
+            <pattern>[%level] %d %class.%method:%line - %message %n</pattern>
+        </encoder>
+        <file>logs/pidan.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>logs/wl.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+    <logger name="druid.sql.Statement" level="DEBUG"/>
+    <logger name="com.module.*.*.mapper" level="DEBUG"></logger>
+    <logger name="com" level="INFO"/>
+
+</configuration>
