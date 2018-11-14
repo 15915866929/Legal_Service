@@ -3,6 +3,7 @@ package com.module.controller;
 import com.core.base.controller.BaseController;
 import com.core.protocol.BaseResponse;
 import com.core.protocol.ReturnCode;
+import com.module.entity.Role;
 import com.module.entity.UserInfo;
 import com.module.interceptor.annotation.AccessRight;
 import com.module.protocol.security.*;
@@ -47,6 +48,21 @@ public class SecurityController extends BaseController {
             List<String> menus = reqData.getMenus();
             securityService.addDepartment(userInfo.getId(), name, uaccount, menus, note);
             result.setResult("添加账号成功");
+        }catch(Exception e){
+            e.printStackTrace();
+            result.setErrorCode(ReturnCode.RETCODE_UNDIFINE_ERR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteDepartment")
+    public BaseResponse deleteDepartment(@RequestBody FindDepartmentDetailReqData reqData, UserInfo userInfo) {
+        BaseResponse result = new BaseResponse();
+        try{
+            securityService.deleteDepartment(reqData.getDepartment_Id());
+            result.setResult("删除部门成功");
         }catch(Exception e){
             e.printStackTrace();
             result.setErrorCode(ReturnCode.RETCODE_UNDIFINE_ERR);
@@ -199,7 +215,7 @@ public class SecurityController extends BaseController {
         try{
             Integer page = reqData.getPage();
             Integer pageSize = reqData.getPageSize();
-            HashMap hashMap = securityService.findAccountList(userInfo.getId(), page, pageSize);
+            HashMap hashMap = securityService.findAccountList(userInfo.getId(), page, pageSize,reqData.getPhone());
             result.setResult(hashMap);
         }catch(Exception e){
             e.printStackTrace();
@@ -470,6 +486,21 @@ public class SecurityController extends BaseController {
     //        List<String> deleteSecondMenus = document.get(("deleteSecondMenus"), List.class);
             securityService.updateRole(userInfo.getId(),role_Id,roleName,department_Id,type,note,menus);
             result.setResult("修改角色成功");
+        }catch(Exception e){
+            e.printStackTrace();
+            result.setErrorCode(ReturnCode.RETCODE_UNDIFINE_ERR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/deleteRole")
+    public BaseResponse deleteRole(@RequestBody UpdateRoleReqData reqData,UserInfo userInfo){
+        BaseResponse result = new BaseResponse();
+        try{
+            securityService.deleteRole(reqData.getRole_Id());
+            result.setResult("删除角色成功");
         }catch(Exception e){
             e.printStackTrace();
             result.setErrorCode(ReturnCode.RETCODE_UNDIFINE_ERR);

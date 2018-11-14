@@ -123,6 +123,21 @@ public class StreetController extends BaseController {
         return result;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/deleteStreet")
+    public BaseResponse deleteStreet(@RequestBody UpdateStreetReqData reqData, UserInfo userInfo) {
+        BaseResponse result = new BaseResponse();
+        try{
+            streetService.deleteStreet(reqData.getStreet_Id());
+            result.setResult("操作成功");
+        }catch(Exception e){
+            e.printStackTrace();
+            result.setErrorCode(ReturnCode.RETCODE_UNDIFINE_ERR);
+            result.setMsg(e.getMessage());
+        }
+        return result;
+    }
+
     /**
      * 禁用/启用镇街
      * @author hsj

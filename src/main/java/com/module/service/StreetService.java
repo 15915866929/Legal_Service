@@ -98,6 +98,12 @@ public class StreetService extends BaseModelService<StreetMapper,Street> {
         this.updateById(street);
     }
 
+    public void deleteStreet(String street_Id) {
+        Street street = this.select(street_Id);
+        street.setStatus(-1);
+        this.updateById(street);
+    }
+
     /*public void banOrEnableStreet(String operatorId, String street_Id, Integer status) throws BaseException {
         Street street = daoFactory.getStreetDao().findStreetById(street_Id);
         if (street == null)

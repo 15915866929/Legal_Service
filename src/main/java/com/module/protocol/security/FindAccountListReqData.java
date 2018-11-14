@@ -12,4 +12,5 @@ public class FindAccountListReqData {
 
 	private Integer page;
 	private Integer pageSize;
+	private String phone;
 }

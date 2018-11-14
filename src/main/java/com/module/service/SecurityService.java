@@ -155,6 +155,24 @@ public class SecurityService {
         this.departmentService.updateById(department);
     }
 
+    public void deleteDepartment(String departmentId){
+        Condition condition = Condition.create();
+        condition.addExpression(Expression.eq("department_Id",departmentId));
+        List<UserInfo> userInfoList = this.userInfoService.selectAll(condition);
+        for (UserInfo userInfo : userInfoList) {
+            userInfo.setStatus(-1);
+            this.userInfoService.updateById(userInfo);
+        }
+        List<Role> roleList = this.roleService.selectAll(condition);
+        for (Role role : roleList) {
+            role.setStatus(-1);
+            this.roleService.updateById(role);
+        }
+        Department department = this.departmentService.select(departmentId);
+        department.setStatus(-1);
+        this.departmentService.updateById(department);
+    }
+
     public void addAccount(AddAccountReqData reqData,String operatorId) {
         UserInfo operator = this.userInfoService.select(operatorId);
         if (StringUtils.isEmpty(reqData.getAccount())) {
@@ -220,7 +238,7 @@ public class SecurityService {
         this.accountService.updateById(account);
     }
 
-    public HashMap findAccountList(String operatorId, Integer page, Integer pageSize){
+    public HashMap findAccountList(String operatorId, Integer page, Integer pageSize,String phone){
         UserInfo operator = this.userInfoService.select(operatorId);
         HashMap hashMap = new HashMap(2);
         ArrayList<ReturnAccount> returnList = new ArrayList<>();
@@ -232,6 +250,9 @@ public class SecurityService {
         }else {
             condition.addExpression(Expression.ne("department_Id",operator.getDepartment_Id()));
             condition.addExpression(Expression.ge("type",operator.getType()));
+        }
+        if(StringUtils.isNotEmpty(phone)){
+            condition.addExpression(Expression.like("telephone",phone));
         }
         List<UserInfo> userInfoList;
         if (page != null && pageSize != null) {
@@ -408,6 +429,7 @@ public class SecurityService {
         Condition condition = Condition.create();
         condition.addOrder(Order.desc("ctime"));
         condition.addExpression(Expression.ne("type",1));
+        condition.addExpression(Expression.eq("status",1));
         List<Role> roleList;
         if (page != null && pageSize != null) {
             condition.setPageSize(pageSize);
@@ -561,6 +583,12 @@ public class SecurityService {
 //        daoFactory.getRoleDao().updateManyToSet(new Document("role_Id", role_Id), new Document("lastUpdateOperator", operatorId).append("lastUpdateTime", DateUtils.currentDatetime())
 //                                                    .append("roleName", roleName).append("note", note).append("department_Id",department_Id).append("type",type));
 
+    }
+
+    public void deleteRole(String role_Id){
+        Role role = this.roleService.select(role_Id);
+        role.setStatus(-1);
+        this.roleService.updateById(role);
     }
 
     public HashMap getOperatorMenus(String userId){
