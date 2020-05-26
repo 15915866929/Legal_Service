@@ -26,9 +26,9 @@ import java.util.Map;
 @Transactional(rollbackFor = Exception.class)
 public class SmsAliyunService {
 
-    private final static String accessId = "LTAIpIUF4xq9ehL7";
-    private final static String accessKey = "QDYJ3u2ax6cnjDv0PxGhiWHRx1iSow";
-    private final static String mnsEndpoint = "http://1487671236357012.mns.cn-shenzhen.aliyuncs.com/";
+    private final static String accessId = "";
+    private final static String accessKey = "";
+    private final static String mnsEndpoint = "";
     private final static String topic = "sms-teamfort";
     private final static String signName = "高明普法";
 
